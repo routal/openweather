@@ -7,22 +7,22 @@ Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
 		cityWeather: '',
-		isCityNotFound: false
+		isCity: false
 	},
 	getters: {
 		getAlignmentValue(state) {
 			return state.cityWeather;
 		},
-		checkStatusError(state) {
-			return state.isCityNotFound;
+		getCityStatus(state) {
+			return state.isCity;
 		}
 	},
 	mutations: {
-		getWeatherInCity(state, weather) {
+		setWeather(state, weather) {
 			state.cityWeather = weather;
 		},
-		errorStatus(state, status) {
-			state.isCityNotFound = status;
+		setStatus(state, status) {
+			state.isCity = status;
 		}
 	},
 	actions: {
@@ -34,11 +34,11 @@ export default new Vuex.Store({
 				.then(response => response.json())
 				.then(data => {
 					if ( data.cod !== '200' ) {
-						this.commit('errorStatus', true);
-						this.commit('getWeatherInCity', '');
+						this.commit('setStatus', true);
+						this.commit('setWeather', '');
 					} else {
-						this.commit('getWeatherInCity', data);
-						this.commit('errorStatus', false);
+						this.commit('setWeather', data);
+						this.commit('setStatus', false);
 						router.push({path: 'Home', query: {city}});
 					}
 				})

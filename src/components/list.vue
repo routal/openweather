@@ -3,7 +3,7 @@
         <div class="weather__list" v-for="weather in getAlignmentValue.list">
             <item :weather="weather"/>
         </div>
-        <div class="weather__error" v-if="checkStatusError">{{cityNotFound}}</div>
+        <div class="weather__error" v-if="getCityStatus">{{cityNotFound}}</div>
     </div>
 </template>
 
@@ -19,7 +19,7 @@
 			item
 		},
 		computed: {
-			...mapGetters(['getAlignmentValue', 'checkStatusError']),
+			...mapGetters(['getAlignmentValue', 'getCityStatus']),
 		},
 
 	};

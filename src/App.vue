@@ -4,30 +4,23 @@
             <b-field>
                 <b-input v-model="city"></b-input>
             </b-field>
-            <b-button @click="getWeather">Получить прогноз погоды города <b>{{setCity}}</b></b-button>
+            <b-button @click="getWeather">Получить прогноз погоды города <b>{{city}}</b></b-button>
         </form>
-        <list/>
-
+        <theList/>
     </div>
 </template>
 
 <script>
 	import {mapActions} from 'vuex';
-	import list from './components/list';
+	import theList from './components/list';
 
 	export default {
+		components: {theList},
 		data: () => ({
 			city: '',
 		}),
-		methods: {
-			...mapActions(['GET_WEATHER']),
-
-			getWeather() {
-				this.GET_WEATHER(this.setCity);
-			}
-		},
 		computed: {
-			setCity() {
+			currentCity() {
 				if ( this.city !== '' ) {
 					return this.city;
 				} else if ( this.$route.query.city !== '' ) {
@@ -37,16 +30,28 @@
 				}
 			}
 		},
-		components: {
-			list
-		},
 		mounted() {
-			if ( this.$route.query.city !== undefined ) {
-				this.getWeather();
-			}
+			this.checkAvailabilityCity();
+			this.checkAvailabilityCityInUrl();
 
-			if ( this.city === '' && this.$route.query.city !== '' ) {
-				this.city = this.$route.query.city;
+		},
+		methods: {
+			...mapActions(['GET_WEATHER']),
+
+			getWeather() {
+				this.GET_WEATHER(this.currentCity);
+			},
+
+			checkAvailabilityCity() {
+				if ( this.$route.query.city !== undefined ) {
+					this.getWeather();
+				}
+			},
+
+			checkAvailabilityCityInUrl() {
+				if ( this.city === '' && this.$route.query.city !== '' ) {
+					this.city = this.$route.query.city;
+				}
 			}
 		}
 	};
