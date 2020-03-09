@@ -1,5 +1,3 @@
-# selectel
-
 ## Project setup
 ```
 yarn install
